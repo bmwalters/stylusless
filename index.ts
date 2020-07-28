@@ -1,7 +1,8 @@
 /// <reference path="./usercss-meta.d.ts" />
 import * as fs from "fs"
 import * as path from "path"
-import fetch from "cross-fetch"
+import { URL } from "url"
+import fetch from "node-fetch"
 import { promisify } from "util"
 import { parse, Metadata, Variable } from "usercss-meta"
 import { lint } from "stylelint"
@@ -95,6 +96,16 @@ const validateCSS = async (styleText: string): Promise<void> => {
 		throw new Error(`Interpolated CSS failed to validate:\n${result.output}`)
 }
 
+const fetchStyle = async (urlString: string): Promise<string> => {
+	const url = new URL(urlString)
+	switch (url.protocol) {
+		case "file:":
+			return await promisify(fs.readFile)(url, { encoding: "utf-8" })
+		default:
+			return await (await fetch(urlString)).text()
+	}
+}
+
 const main = async () => {
 	const argv = yargs
 		.usage(
@@ -134,7 +145,7 @@ const main = async () => {
 	const stylePaths = await Promise.all(
 		styleUrls.map(async (styleUrl) => {
 			// TODO: Keep track of currently installed version?
-			const rawStyle = await (await fetch(styleUrl)).text()
+			const rawStyle = await fetchStyle(styleUrl)
 
 			const { metadata, errors } = parse(rawStyle, { mandatoryKeys: [] })
 			if (errors.length) {
