@@ -136,7 +136,7 @@ const main = async () => {
 			// TODO: Keep track of currently installed version?
 			const rawStyle = await (await fetch(styleUrl)).text()
 
-			const { metadata, errors } = parse(rawStyle)
+			const { metadata, errors } = parse(rawStyle, { mandatoryKeys: [] })
 			if (errors.length) {
 				throw new Error(errors.join("\n"))
 			}
