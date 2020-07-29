@@ -7,8 +7,8 @@
     "run": "ts-node index.ts"
   },
   "devDependencies": {
+    "@types/css-tree": "^1.0.3",
     "@types/node": "^14.0.26",
-    "@types/stylelint": "^9.10.1",
     "@types/node-fetch": "^2.5.7",
     "@types/yargs": "^15.0.5",
     "prettier": "^2.0.5",
@@ -16,10 +16,9 @@
     "typescript": "^3.9.7"
   },
   "dependencies": {
+    "css-tree": "^1.0.0-alpha.39",
     "node-fetch": "^3.0.0-beta.7",
     "string.prototype.replaceall": "^1.0.3",
-    "stylelint": "^13.6.1",
-    "stylelint-config-recommended": "^3.0.0",
     "usercss-meta": "^0.9.0",
     "yargs": "^15.4.1"
   }
